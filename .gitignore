@@ -3,3 +3,4 @@ vendor
 composer.phar
 composer.lock
 run-php-*.sh
+.phpunit.result.cache

@@ -22,6 +22,9 @@
             "IniParser":"src/"
         }
     },
+    "require": {
+        "php": ">=7.4"
+    },
     "require-dev": {
         "phpunit/phpunit": "^9.6 || ^10.5 || ^11.0 || ^12.0"
     },

@@ -3,14 +3,15 @@
 /**
  * [MIT Licensed](http://www.opensource.org/licenses/mit-license.php)
  * Copyright (c) 2013 Austin Hyde
- * 
+ *
  * Implements a parser for INI files that supports
  * * Section inheritance
  * * Property nesting
  * * Simple arrays
- * 
- * Compatible with PHP 5.2.0+
- * 
+ *
+ * Compatible with PHP 7.4.0+
+ * Compatible with PHP 8.5.13+
+ *
  * @author Austin Hyde
  * @author Till Klampaeckel <till@php.net>
  */
@@ -24,13 +25,13 @@ class IniParser {
 
     /**
      * Enable/disable property nesting feature
-     * @var boolean 
+     * @var boolean
      */
     public $property_nesting = true;
 
     /**
      * Use ArrayObject to allow array work as object (true) or use native arrays (false)
-     * @var boolean 
+     * @var boolean
      */
     public $use_array_object = true;
 
@@ -58,7 +59,7 @@ class IniParser {
 
     /**
      * Array literals parse mode
-     * @var int 
+     * @var int
      */
     public $array_literals_behavior = self::PARSE_SIMPLE;
 
@@ -194,7 +195,7 @@ class IniParser {
                         $current = array($current);
                     }
 
-                    if (!array_key_exists($current_key, $current)) {
+                    if (!array_key_exists($current_key, (array)$current)) {
                         if (!empty($path)) {
                             $current[$current_key] = $this->getArrayValue();
                         } else {

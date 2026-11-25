@@ -1,9 +1,11 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @author Till Klampaeckel <till@php.net>
  */
-class IniParserTest extends PHPUnit_Framework_TestCase
+class IniParserTest extends TestCase
 {
     /**
      * This is a test-case I wrote because I think there are small bugs
@@ -22,11 +24,9 @@ class IniParserTest extends PHPUnit_Framework_TestCase
         $this->assertSame($config, $parseIniString);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testConfigNotFound()
     {
+        $this->expectException(InvalidArgumentException::class);
         new IniParser('/this/should/never/exist.ini');
     }
 
@@ -82,8 +82,8 @@ class IniParserTest extends PHPUnit_Framework_TestCase
     {
         $configObj = $this->getConfig('fixture02.ini');
 
-        $this->assertObjectHasAttribute('prod', $configObj);
-        $this->assertObjectHasAttribute('dev', $configObj);
+        $this->assertObjectHasProperty('prod', $configObj);
+        $this->assertObjectHasProperty('dev', $configObj);
 
         $this->assertEquals($configObj->prod, $configObj->dev);
         $this->assertEquals('world', $configObj->dev->hello);
@@ -112,10 +112,10 @@ class IniParserTest extends PHPUnit_Framework_TestCase
     {
         $configObj = $this->getConfig('fixture04.ini');
 
-        $this->assertInternalType('array', $configObj['array1']);
+        $this->assertIsArray($configObj['array1']);
         $this->assertEquals(array('a','b','c'), $configObj['array1']);
 
-        $this->assertInternalType('array', $configObj['sect1']['array2']);
+        $this->assertIsArray($configObj['sect1']['array2']);
         $this->assertEquals(array('d','e','f'), $configObj['sect1']['array2']);
     }
 
@@ -132,11 +132,10 @@ class IniParserTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test that inheriting from an undefined section gives a nice error
-     *
-     * @expectedException UnexpectedValueException
      */
     public function testInvalidSectionReference()
     {
+        $this->expectException(UnexpectedValueException::class);
         $configObj = $this->getConfig('fixture06.ini');
     }
 
@@ -215,7 +214,7 @@ class IniParserTest extends PHPUnit_Framework_TestCase
      * Tests that appending to a potentially non-existent array works as expected
      * Spawned by https://github.com/austinhyde/IniParser/issues/6
      * and https://github.com/austinhyde/IniParser/pull/7
-     * 
+     *
      * @return void
      */
     public function testArrayAppend()
@@ -259,7 +258,7 @@ class IniParserTest extends PHPUnit_Framework_TestCase
         $parser->use_array_object = FALSE;
         $configArr = $parser->parse();
 
-        $this->assertInternalType('array', $configArr);
+        $this->assertIsArray($configArr);
     }
 
     /**
@@ -271,8 +270,8 @@ class IniParserTest extends PHPUnit_Framework_TestCase
         $configObj = $this->getConfig('fixture09.ini');
         $config    = $this->phpUnitDoesntUnderstandArrayObject($configObj);
 
-        $this->assertObjectHasAttribute('helloworld', $configObj);
-        $this->assertObjectHasAttribute('hello', $configObj->helloworld);
+        $this->assertObjectHasProperty('helloworld', $configObj);
+        $this->assertObjectHasProperty('hello', $configObj->helloworld);
 
         $this->assertEquals((array)$configObj->helloworld->hello, array(1 => 'world', 0 => 'hello'));
     }
@@ -287,7 +286,7 @@ class IniParserTest extends PHPUnit_Framework_TestCase
             array('array_literals_behavior' => IniParser::PARSE_JSON));
         $config = $this->phpUnitDoesntUnderstandArrayObject($configObj);
 
-        $this->assertObjectHasAttribute('people', $configObj);
+        $this->assertObjectHasProperty('people', $configObj);
 
         $array = array(
             'boss' => array(
@@ -380,7 +379,7 @@ class IniParserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tested with 3.6.x so far. See {@link PHPUnit_Runner_Version::id()}.
+     * Converts nested ArrayObjects to plain arrays for comparison.
      *
      * @param ArrayObject $config
      *

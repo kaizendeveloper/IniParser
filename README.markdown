@@ -1,10 +1,10 @@
 # IniParser
 
-[![Build Status](https://secure.travis-ci.org/austinhyde/IniParser.png?branch=master)](http://travis-ci.org/austinhyde/IniParser)
+[![Tests](https://github.com/kaizendeveloper/IniParser/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/kaizendeveloper/IniParser/actions/workflows/tests.yml)
 
 IniParser is a simple parser for complex INI files, providing a number of extra syntactic features to the built-in INI parsing functions, including section inheritance, property nesting, and array literals.
 
-**IMPORTANT:** IniParser should be considered beta-quality, and there may still be bugs. Feel free to open an issue or submit a pull request, and I'll take a look at it!
+**IMPORTANT:** IniParser is not my code, I just forked it and solved and issue with PHP 8.5.13, the original authors are Austin Hyde and Till Klampaeckel, check their repo at austinhyde/iniparser
 
 ## Installing by [Composer](https://getcomposer.org)
 
@@ -13,7 +13,7 @@ Set your `composer.json` file to have :
 ```json
 {
 	"require": {
-		"austinhyde/iniparser": "dev-master"
+		"kaizendeveloper/iniparser": "dev-master"
 	}
 }
 ```
@@ -30,7 +30,7 @@ Standard INI files look like this:
 
     key = value
     another_key = another value
-    
+
     [section_name]
     a_sub_key = yet another value
 
@@ -49,20 +49,20 @@ array(
 This is great when you just want a simple configuration file, but here is a super-charged INI file that you might find in the wild:
 
     environment = testing
-    
+
     [testing]
     debug = true
     database.connection = "mysql:host=127.0.0.1"
     database.name = test
-    database.username = 
+    database.username =
     database.password =
     secrets = [1,2,3]
-    
+
     [staging : testing]
     database.name = stage
     database.username = staging
     database.password = 12345
-    
+
     [production : staging]
     debug = false;
     database.name = production
@@ -127,19 +127,19 @@ Besides arrays, you can create dictionaries and more complex structures using JS
 
      people = '{
         "boss": {
-           "name": "John", 
-           "age": 42 
-        }, 
+           "name": "John",
+           "age": 42
+        },
         "staff": [
            {
               "name": "Mark",
-              "age": 35 
-           }, 
+              "age": 35
+           },
            {
-              "name": "Bill", 
-              "age": 44 
+              "name": "Bill",
+              "age": 44
            }
-        ] 
+        ]
      }'
 
 This turns into an array like:
